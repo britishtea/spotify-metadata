@@ -30,7 +30,7 @@ module Spotify
   #
   # Returns an Array of Spotify::Artist objects.
   def self.search_artist(name, options = {})
-    self.search(:artist, options.merge :q => name)
+    self.search :artist, options.merge(:q => name)
   end
   
   # Public: searches the Spotify API for albums.
@@ -41,7 +41,7 @@ module Spotify
   #
   # Returns an Array of Spotify::Album objects.
   def self.search_album(name, options = {})
-    self.search(:album, options.merge :q => name)
+    self.search :album, options.merge(:q => name)
   end
   
   # Public: searches the Spotify API for tracks.
@@ -52,7 +52,7 @@ module Spotify
   #
   # Returns an Array of Spotify::Track objects.
   def self.search_track(name, options = {})
-    self.search(:track, options.merge :q => name)
+    self.search :track, options.merge(:q => name)
   end
   
   # Internal: Represents an artist.

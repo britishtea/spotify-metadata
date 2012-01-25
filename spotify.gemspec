@@ -4,8 +4,8 @@ require 'spotify/version'
 Gem::Specification.new do |s|
   s.name        = 'spotify'
   s.version     = Spotify::VERSION
-  s.summary     = 'Search Spotify\' Metadata API using Ruby.'
-  s.description = 'Search Spotify\' Metadata API using Ruby.'
+  s.summary     = 'Search Spotify\'s Metadata API using Ruby.'
+  s.description = 'Search Spotify\'s Metadata API using Ruby.'
   s.authors     = ["Paul Brickfeld"]
   s.email       = 'theboss@nearupon.com'
   s.files       = Dir.glob 'lib/*.rb'

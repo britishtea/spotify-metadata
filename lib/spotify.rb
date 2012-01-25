@@ -172,5 +172,3 @@ private
     get "/lookup/#{API_VERSION}/", :query => query
   end
 end
-
-artist

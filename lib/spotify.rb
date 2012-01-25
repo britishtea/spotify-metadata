@@ -28,7 +28,7 @@ module Spotify
   # options - The Hash options send along with the request (default: {}).
   #           :page - The page of the result set (optional).
   #
-  # Returns an Array of Spotify::Artist objects.
+  # Returns nil or an Array of Spotify::Artist objects.
   def self.search_artist(name, options = {})
     self.search :artist, options.merge(:q => name)
   end
@@ -39,7 +39,7 @@ module Spotify
   # options - The Hash options send along with the request (default: {}).
   #           :page - The page of the result set (optional).
   #
-  # Returns an Array of Spotify::Album objects.
+  # Returns nil or an Array of Spotify::Album objects.
   def self.search_album(name, options = {})
     self.search :album, options.merge(:q => name)
   end
@@ -50,9 +50,58 @@ module Spotify
   # options - The Hash options send along with the request (default: {}).
   #           :page - The page of the result set (optional).
   #
-  # Returns an Array of Spotify::Track objects.
+  # Returns nil or an Array of Spotify::Track objects.
   def self.search_track(name, options = {})
     self.search :track, options.merge(:q => name)
+  end
+  
+  # Public: Looks up an Spotify artist URI.
+  #
+  # uri    - The Spotify URI String that needs to be lookup up.
+  # extras - A Symbol that define the detail level expected in the response
+  #          (default: nil).
+  #          :album       - request basic information about all the albums the 
+  #                         artist is featured in.
+  #          :albumdetail - request detailed information about all the albums 
+  #                         the artist is featured in
+  #
+  # Returns nil or an Spotify::Artist object.
+  def self.lookup_artist(uri, extras = nil)
+    query = extras.nil? ? { :uri => uri } : { :uri => uri, :extras => extras }
+    
+    artist = Artist.new self.lookup(query)['artist']
+    artist.albums.map! { |album| Album.new album['album'] } if extras
+    
+    artist
+  end
+
+  # Public: Looks up an Spotify album URI.
+  #
+  # uri    - The Spotify URI String that needs to be lookup up.
+  # extras - A Symbol that defines the detail level expected in the response 
+  #          (default: nil).
+  #          :track       - request basic information about all tracks in the
+  #                         album.
+  #          :trackdetail - request detailed information about all tracks in the
+  #                         album.
+  #
+  # Returns nil or an Spotify::Album object.
+  def self.lookup_album(uri, extras = nil)
+    query = extras.nil? ? { :uri => uri } : { :uri => uri, :extras => extras }
+    
+    album = Album.new self.lookup(query)['album']
+    album.tracks.map! { |track| Track.new track } if extras
+    
+    album
+  end
+
+  # Public: Looks up an Spotify track URI.
+  #
+  # uri    - The Spotify URI String that needs to be lookup up.
+  #
+  # Returns nil or an Spotify::Track object.  
+  def self.lookup_track(uri)
+    Track.new self.lookup(:uri => uri)['track']
   end
   
   # Internal: Represents an artist.
@@ -65,7 +114,7 @@ module Spotify
     #
     # Returns an Array of Spotify::Artist objects.
     def artists
-      super.map { |artist| Artist.new artist }
+      super.nil? ? super : super.map { |artist| Artist.new artist }
     end
     
     # Public: Gets the artist of artists.
@@ -73,7 +122,13 @@ module Spotify
     # Returns an Array of Spotify::Artist objects or a Spotify::Artist object
     # if only one artist was returned.
     def artist
-      artists.size > 1 ? artists : artists.first
+      if artists.nil?
+        Artist.new :name => super
+      elsif artists.size > 1
+        artists
+      else
+        artists.first
+      end
     end
   end
   
@@ -94,7 +149,7 @@ private
   # method - The API method Symbol that needs to be called.
   # query  - The query Hash that needs to be passed.
   #
-  # Returns an Array of artist, album or track objects.
+  # Returns nil or an Array of artist, album or track objects.
   def self.search(method, query)
     result = get "/search/#{API_VERSION}/#{method}", :query => query
     
@@ -110,14 +165,12 @@ private
   
   # Internal: Performs a lookup query.
   #
-  # method -
   # query  -
   #
   # Returns
-  def self.lookup(method, query)
-    puts 'This method is not yet implemented'
-    #result = get "/lookup/#{API_VERSION}/#{method}.json", :query => query
-    #
-    #self.const_get(methods.to_s.capitalize).new result
+  def self.lookup(query)
+    get "/lookup/#{API_VERSION}/", :query => query
   end
 end
+
+artist

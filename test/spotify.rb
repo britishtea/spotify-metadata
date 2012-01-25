@@ -17,12 +17,19 @@ describe Spotify do
     end
   end
   
+  sleep(1)
+  
   describe 'when searching for albums' do
     it 'should return an Array of albums' do
       albums = Spotify::search_album 'The King of Limbs'
       
       assert_kind_of Array, albums
       assert_kind_of Spotify::Album, albums.first
+    end
+    
+    it 'should have an artist or an array of artists' do
+      album = Spotify::search_album('The King of Limbs').first
+      assert_kind_of Spotify::Artist, album.artist
     end
     
     it 'should return nil' do
@@ -32,12 +39,23 @@ describe Spotify do
     end
   end
   
+  sleep(1)
+  
   describe 'when searching for tracks' do
     it 'should return an Array of tracks' do
       tracks = Spotify::search_track 'Africa'
       
       assert_kind_of Array, tracks
       assert_kind_of Spotify::Track, tracks.first
+    end
+    
+    it 'should have an album' do
+      track = Spotify::search_track('Africa').first
+      assert_kind_of Spotify::Album, track.album
+
+      collab = Spotify::search_track('Revenge (Feat. The Flaming Lips)').first
+      assert_kind_of Array, collab.artist
+      assert_kind_of Spotify::Artist, collab.artist.first
     end
     
     it 'should return nil' do

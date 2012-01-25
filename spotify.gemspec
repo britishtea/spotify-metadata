@@ -2,7 +2,7 @@ $:.push File.expand_path('../lib', __FILE__)
 require 'spotify/version'
 
 Gem::Specification.new do |s|
-  s.name        = 'spotify'
+  s.name        = 'spotify-metadata'
   s.version     = Spotify::VERSION
   s.summary     = 'Search Spotify\'s Metadata API using Ruby.'
   s.description = 'Search Spotify\'s Metadata API using Ruby.'

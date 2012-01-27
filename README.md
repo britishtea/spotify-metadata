@@ -1,6 +1,6 @@
 # What is it?
 
-This gem lets you access the [Spotify Metadata API](http://developer.spotify.com/en/metadata-api/overview/) easily.
+**spotify-metadata** is a Ruby gem that lets provides easy acces to the [Spotify Metadata API](http://developer.spotify.com/en/metadata-api/overview/).
 
 # Usage
 
@@ -18,17 +18,17 @@ puts "#{album.artist.name} - #{album.name}" # => Radiohead - Kid A
 
 # Looking up Spotify URIs
 artist = Spotify::lookup_artist 'spotify:artist:1Z2KInfSmPOzAIYyiaXeti', :album
-artist.albums.each do |a|
-	puts a.name
-end
+puts artist.name # => 'Youth Lagoon'
 
-album = Spotify::lookup_album 'spotify:album:4oGbmR7dENuqtRyvX8MShq'
+artist.albums.join', ' # => 'The Year of Hibernation, The Year of Hibernation' (See the 'Known Bugs' version)
+
+album = Spotify::lookup_album 'spotify:album:4oGbmR7dENuqtRyvX8MShq', :track
 album.tracks.each do |track|
 	track.name
 end
 ```
 
-# Install
+# Installation
 
 ```ruby
 gem install spotify-metadata
@@ -37,9 +37,32 @@ gem install spotify-metadata
 or when using Bundler:
 
 ```ruby
-gem 'spotify-metadata', :git => 'git://github.com/britishtea/spotify.git'
+gem 'spotify-metadata', :require => 'spotify, :git => 'git://github.com/britishtea/spotify.git'
 ```
 
 # Known Bugs
 
 - Track numbers, artist IDs and external IDs can't be looked up (the API uses track-number). Use something like `Spotify::Track.send(:'track-number')` to work around this problem.
+- When requesting the albums by an artist (`Spotify::lookup_artist url, :album`), the same album is sometimes listed more than once. This is due to Spotify providing different editions in different territories. Something like `artist.availability['territories']` can be used to filter out the relevant edition.
+
+# License
+
+Copyright (C) 2012 Paul Brickfeld
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -165,9 +165,9 @@ private
   
   # Internal: Performs a lookup query.
   #
-  # query  -
+  # query - The query String that needs to be passed. 
   #
-  # Returns
+  # Returns a JSON object contained in a Hash.
   def self.lookup(query)
     get "/lookup/#{API_VERSION}/", :query => query
   end

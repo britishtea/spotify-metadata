@@ -17,7 +17,7 @@ module Spotify
   include HTTParty
   base_uri 'ws.spotify.com'
   format   :json
-  headers  'Accept' => 'application/json' # Spotify API prefers Accept headers.
+  headers  'Accept' => 'application/json' # Spotify prefers Accept headers.
   
   # Internal: The version Integer of Spotify's API.
   API_VERSION = 1
@@ -105,8 +105,7 @@ module Spotify
   end
   
   # Internal: Represents an artist.
-  class Artist < OpenStruct
-  end
+  class Artist < OpenStruct; end
   
   # Internal: Represents an album.
   class Album < OpenStruct

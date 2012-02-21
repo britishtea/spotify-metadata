@@ -29,6 +29,7 @@ module Spotify
   #           :page - The page of the result set (optional).
   #
   # Returns nil or an Array of Spotify::Artist objects.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.search_artist(name, options = {})
     self.search :artist, options.merge(:q => name)
   end
@@ -40,6 +41,7 @@ module Spotify
   #           :page - The page of the result set (optional).
   #
   # Returns nil or an Array of Spotify::Album objects.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.search_album(name, options = {})
     self.search :album, options.merge(:q => name)
   end
@@ -51,6 +53,7 @@ module Spotify
   #           :page - The page of the result set (optional).
   #
   # Returns nil or an Array of Spotify::Track objects.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.search_track(name, options = {})
     self.search :track, options.merge(:q => name)
   end
@@ -66,6 +69,7 @@ module Spotify
   #                         the artist is featured in
   #
   # Returns nil or an Spotify::Artist object.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.lookup_artist(uri, extras = nil)
     query = extras.nil? ? { :uri => uri } : { :uri => uri, :extras => extras }
     
@@ -86,6 +90,7 @@ module Spotify
   #                         album.
   #
   # Returns nil or an Spotify::Album object.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.lookup_album(uri, extras = nil)
     query = extras.nil? ? { :uri => uri } : { :uri => uri, :extras => extras }
     
@@ -99,7 +104,8 @@ module Spotify
   #
   # uri    - The Spotify URI String that needs to be lookup up.
   #
-  # Returns nil or an Spotify::Track object.  
+  # Returns nil or an Spotify::Track object.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.lookup_track(uri)
     Track.new self.lookup(:uri => uri)['track']
   end
@@ -149,6 +155,7 @@ private
   # query  - The query Hash that needs to be passed.
   #
   # Returns nil or an Array of artist, album or track objects.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.search(method, query)
     result = get "/search/#{API_VERSION}/#{method}", :query => query
     
@@ -167,6 +174,7 @@ private
   # query - The query String that needs to be passed. 
   #
   # Returns a JSON object contained in a Hash.
+  # Raises a SocketError if there's something wrong with the connection.
   def self.lookup(query)
     get "/lookup/#{API_VERSION}/", :query => query
   end

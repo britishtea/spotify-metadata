@@ -1,6 +1,6 @@
 # What is it?
 
-**spotify-metadata** is a Ruby gem that lets provides easy acces to the [Spotify Metadata API](http://developer.spotify.com/en/metadata-api/overview/).
+**spotify-metadata** is a Ruby gem that provides easy acces to the [Spotify Metadata API](http://developer.spotify.com/en/metadata-api/overview/). The API has serves two functions: searching for metadata – artist names and their Spotify URIs, the tracks in an album, the artist(s) of a track, etc – and looking up Spotify URLs.
 
 # Usage
 
@@ -10,17 +10,17 @@ Here are some little, (mostly) useless examples for you to see how this gem work
 require 'spotify'
 
 # Searching
-artists = Spotify.search_artist 'Radiohead'
+artists = Spotify::search_artist 'Radiohead'
 puts artists.first.name # => 'Radiohead'
 
-album = Spotify.search_album('The King of Limbs').first # notice .first.
+album = Spotify::search_album('The King of Limbs').first # notice .first.
 puts "#{album.artist.name} - #{album.name}" # => Radiohead - Kid A
 
 # Looking up Spotify URIs
 artist = Spotify::lookup_artist 'spotify:artist:1Z2KInfSmPOzAIYyiaXeti', :album
 puts artist.name # => 'Youth Lagoon'
 
-artist.albums.join', ' # => 'The Year of Hibernation, The Year of Hibernation' (See the 'Known Bugs' version)
+artist.albums.join', ' # => 'The Year of Hibernation, The Year of Hibernation' (See the 'Known Bugs')
 
 album = Spotify::lookup_album 'spotify:album:4oGbmR7dENuqtRyvX8MShq', :track
 album.tracks.each do |track|
@@ -45,7 +45,7 @@ gem 'spotify-metadata', :require => 'spotify, :git => 'git://github.com/britisht
 - Track numbers, artist IDs and external IDs can't be looked up (the API uses track-number). Use something like `Spotify::Track.send(:'track-number')` to work around this problem.
 - When requesting the albums by an artist (`Spotify::lookup_artist url, :album`), the same album is sometimes listed more than once. This is due to Spotify providing different editions in different territories. Something like `artist.availability['territories']` can be used to filter out the relevant edition.
 
-# License
+# License - MIT License
 
 Copyright (C) 2012 Paul Brickfeld
 

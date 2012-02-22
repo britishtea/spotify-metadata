@@ -11,16 +11,16 @@ require 'spotify'
 
 # Searching
 artists = Spotify::search_artist 'Radiohead'
-puts artists.first.name # => 'Radiohead'
+puts artists.first.name # => "Radiohead"
 
 album = Spotify::search_album('The King of Limbs').first # notice .first.
-puts "#{album.artist.name} - #{album.name}" # => Radiohead - Kid A
+puts "#{album.artist.name} - #{album.name}" # => "Radiohead - Kid A"
 
 # Looking up Spotify URIs
 artist = Spotify::lookup_artist 'spotify:artist:1Z2KInfSmPOzAIYyiaXeti', :album
-puts artist.name # => 'Youth Lagoon'
+puts artist.name # => "Youth Lagoon"
 
-artist.albums.join', ' # => 'The Year of Hibernation, The Year of Hibernation' (See the 'Known Bugs')
+artist.albums.join ', ' # => "The Year of Hibernation, The Year of Hibernation" (See the 'Known Bugs')
 
 album = Spotify::lookup_album 'spotify:album:4oGbmR7dENuqtRyvX8MShq', :track
 album.tracks.each do |track|
@@ -30,14 +30,10 @@ end
 
 # Installation
 
-```ruby
-gem install spotify-metadata
-```
-
-or when using Bundler:
+Just type `gem install spotify-metadata` on the command line. Or when using Bundler:
 
 ```ruby
-gem 'spotify-metadata', :require => 'spotify, :git => 'git://github.com/britishtea/spotify.git'
+gem 'spotify-metadata', :require => 'spotify', :git => 'git://github.com/britishtea/spotify.git'
 ```
 
 # Known Bugs
